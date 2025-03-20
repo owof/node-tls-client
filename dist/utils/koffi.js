@@ -13,10 +13,11 @@ const koffi_1 = require("koffi");
  */
 async function load() {
     const file = fileInfo();
-    // Since we're using TypeScript and paths are relative to the compiled output,
-    // this will reliably get the path to the lib directory from the dist/utils directory
-    const packageRoot = path_1.default.resolve(process.cwd());
-    const libraryPath = path_1.default.join(packageRoot, "lib", file.name);
+    // Use the module's directory path instead of the current working directory
+    // This ensures we look for libraries in node_modules/node-tls-client/lib
+    // regardless of where the app is being run from
+    const moduleRoot = path_1.default.resolve(__dirname, '../../');
+    const libraryPath = path_1.default.join(moduleRoot, "lib", file.name);
     if (!fs_1.default.existsSync(libraryPath)) {
         throw new Error(`Native library not found: ${file.name}. Please ensure it exists in the lib directory.`);
     }

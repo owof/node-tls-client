@@ -12,10 +12,11 @@ import { IClient } from "../interface/client";
 export async function load(): Promise<IClient> {
   const file = fileInfo();
   
-  // Since we're using TypeScript and paths are relative to the compiled output,
-  // this will reliably get the path to the lib directory from the dist/utils directory
-  const packageRoot = path.resolve(process.cwd());
-  const libraryPath = path.join(packageRoot, "lib", file.name);
+  // Use the module's directory path instead of the current working directory
+  // This ensures we look for libraries in node_modules/node-tls-client/lib
+  // regardless of where the app is being run from
+  const moduleRoot = path.resolve(__dirname, '../../');
+  const libraryPath = path.join(moduleRoot, "lib", file.name);
 
   if (!fs.existsSync(libraryPath)) {
     throw new Error(`Native library not found: ${file.name}. Please ensure it exists in the lib directory.`);

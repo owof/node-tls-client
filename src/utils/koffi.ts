@@ -18,6 +18,12 @@ export async function load(): Promise<IClient> {
   const moduleRoot = path.resolve(__dirname, '../../');
   const libraryPath = path.join(moduleRoot, "lib", file.name);
 
+  console.log(`Looking for library at: ${libraryPath}`);
+
+  // log all files in the lib directory
+  console.log(`Files in lib directory: ${fs.readdirSync(path.join(moduleRoot, "lib"))}`);
+  
+
   if (!fs.existsSync(libraryPath)) {
     throw new Error(`Native library not found: ${file.name}. Please ensure it exists in the lib directory.`);
   }
